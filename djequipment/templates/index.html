@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>'its work' </h1>
+    {% for equipment in equipments %}
+        <hr>
+        <img width="150" src="/media/{{ equipment.photo.photo }}" alt="" class="">
+        <h1> {{ equipment.category }} </h1>
+        <p> {{ equipment.manufacturer }} </p>
+        <p> {{ equipment.model }} </p>
+        <p> {{ equipment.year }} </p>
+        <hr>
+    {% endfor %}
+{% endblock %}
