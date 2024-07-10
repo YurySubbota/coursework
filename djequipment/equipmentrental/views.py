@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from equipmentrental.models import Equipment, Photo
-from equipmentrental.cart import is_reserved, users_cart, cart_get
+from equipmentrental.cart import is_reserved, users_cart, cart_get, cart_add, cart_remove
 
 
 def index(request):
@@ -70,10 +70,12 @@ def cart_view(request):
     return render(request, 'cart.html', context)
 
 
+def add_cart(request, equipment_id):
+    session = request.session.session_key
+    cart_add(equipment_id, session)
+    return redirect('cart')
 
-def cart_add(request):
-    pass
 
-
-def cart_remove(request, equipment_id):
-    pass
+def remove_cart(request, equipment_id):
+    cart_remove(equipment_id)
+    return redirect('cart')

@@ -52,29 +52,5 @@ def users_cart(user_id):
     return equip_in_cart
 
 
-def test_cart():
-    print('add', cart_add(30, 'this user'))
-    print('add', cart_add(20, 'this user'))
-    print('add', cart_add(25, 'this user'))
-    print('add', cart_add(100, 'other'))
-    keys = use_redis().keys('*')
-    print('keys', keys)
-    print('user"this user"', users_cart('this user'))
-    if users_cart('this user'):
-        for eq in users_cart('this user'):
-            print('this user equip', eq['id'])
-            print('this user delite', eq['time'])
-    while True:
-        sleep(1)
-        for key in keys:
-            key = key.decode('utf-8')
-            print('key', key)
-            print('get_key', cart_get(key))
-            print('get_not_key', cart_get(31))
-            print('is_reserved', is_reserved(key))
-            print('is_reserved_not_key', is_reserved(32))
-
-
-if __name__ == '__main__':
-    test_cart()
-    pass
+def cart_remove(key):
+    use_redis().delete(key)

@@ -12,7 +12,10 @@
                 <p class="">description: {{ equipment.description }}</p>
                 <p class="">size: width - {{ equipment.width }} height - {{ equipment.height }} depth - {{ equipment.depth }}</p>
                 {% if reserved_until %}
-                    <p>Reserved until {{ reserved_until }}</p>
+                    <p>Reserved until {{ reserved_until }}</p> 
+                    <a href="{% url 'remove_cart' equipment_id=equipment.id %}">Remove from cart</a>
+                {% else %}
+                    <a href="{% url 'add_cart' equipment_id=equipment.id %}">Add to cart</a>
                 {% endif %}
             </div>
         
@@ -21,6 +24,7 @@
                     <img src="/media/{{ photo.photo }}" class="photo-image" alt="" style="{width: 400px; height: 300px; margin-right: 10px;}">
                 {% endfor %}
             </div>
+            
         </div>
 
 {% endblock %}
