@@ -11,4 +11,6 @@
         <p> {{ equipment.year }} </p>
         <hr>
     {% endfor %}
+    <p> {{ message }} </p>
+    {% include 'pagination.html' with page=equipments %}
 {% endblock %}
