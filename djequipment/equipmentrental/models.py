@@ -23,7 +23,7 @@ class Equipment(models.Model):
     year = models.IntegerField(blank=True, null=True)
     description = models.TextField()
     status = models.CharField(choices=STATUS_CHOICES, default='ready',max_length=100)
-    warehouse_place = models.IntegerField(unique=True, null=True)
+    warehouse_place = models.IntegerField(unique=True, null=True, blank=True)
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     depth = models.IntegerField(blank=True, null=True)

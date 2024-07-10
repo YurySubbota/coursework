@@ -5,6 +5,7 @@ from equipmentrental.cart import is_reserved
 
 
 def index(request):
+    session = request.session.session_key
     message = ''
     equipment = Equipment.objects.filter(status='ready').order_by('-id')
     reserved = Equipment.objects.none()
@@ -29,3 +30,12 @@ def index(request):
         message = 'All equipments are reserved or booked, try again later.'
     context = {'equipments': equipment, 'message': message}
     return render(request, 'index.html', context)
+
+
+def detail_equipment(request, equipment_id):
+    equipment = Equipment.objects.get(id=equipment_id)
+    photos = Photo.objects.filter(equipment=equipment)
+    context = {'equipment': equipment, 'photos': photos}
+    return render(request, 'detail_equipment.html', context)
+
+

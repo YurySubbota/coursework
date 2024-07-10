@@ -9,6 +9,8 @@
         <p> {{ equipment.manufacturer }} </p>
         <p> {{ equipment.model }} </p>
         <p> {{ equipment.year }} </p>
+        <br>
+        <a href="{% url 'detail_equipment' equipment_id=equipment.id %}">Detail</a>
         <hr>
     {% endfor %}
     <p> {{ message }} </p>
