@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from equipmentrental.models import Equipment, Photo
-from equipmentrental.cart import is_reserved, users_cart
+from equipmentrental.cart import is_reserved, users_cart, cart_get
 
 
 def index(request):
@@ -34,8 +34,9 @@ def index(request):
 
 def detail_equipment(request, equipment_id):
     equipment = Equipment.objects.get(id=equipment_id)
+    reserved_until = cart_get(equipment.id)[1]
     photos = Photo.objects.filter(equipment=equipment)
-    context = {'equipment': equipment, 'photos': photos}
+    context = {'equipment': equipment, 'photos': photos, 'reserved_until': reserved_until}
     return render(request, 'detail_equipment.html', context)
 
 
@@ -69,3 +70,10 @@ def cart_view(request):
     return render(request, 'cart.html', context)
 
 
+
+def cart_add(request):
+    pass
+
+
+def cart_remove(request, equipment_id):
+    pass
