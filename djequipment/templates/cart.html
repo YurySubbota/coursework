@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Cart Page</h1>
+    {% for equipment in equipments %}
+        <hr>
+        <img width="150" src="/media/{{ equipment.photo.photo }}" alt="" class="">
+        <h1> category {{ equipment.category }} </h1>
+        <p> manufacturer {{ equipment.manufacturer }} </p>
+        <p> model {{ equipment.model }} </p>
+        <p> year {{ equipment.year }} </p>
+        {% for reserv in reserved %}
+            {% if reserv.id == equipment.id  %}
+                <p>Reserved until {{ reserv.time }}</p>
+            {% endif %}
+        {% endfor %}
+        <br>
+        <a href="{% url 'detail_equipment' equipment_id=equipment.id %}">Detail</a>
+        <hr>
+    {% endfor %}
+    <p> {{ message }} </p>
+    {% include 'pagination.html' with page=equipments %}
+{% endblock %}

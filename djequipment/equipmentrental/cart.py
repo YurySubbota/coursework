@@ -48,7 +48,7 @@ def users_cart(user_id):
         return None
     for key in all_keys:
         if cart_get(key)[0] == user_id:
-            equip_in_cart.append({'id': key.decode('utf-8'), 'time': cart_get(key)[1]})
+            equip_in_cart.append({'id': int(key.decode('utf-8')), 'time': cart_get(key)[1]})
     return equip_in_cart
 
 

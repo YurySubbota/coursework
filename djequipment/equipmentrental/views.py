@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from equipmentrental.models import Equipment, Photo
-from equipmentrental.cart import is_reserved
+from equipmentrental.cart import is_reserved, users_cart
 
 
 def index(request):
@@ -37,5 +37,35 @@ def detail_equipment(request, equipment_id):
     photos = Photo.objects.filter(equipment=equipment)
     context = {'equipment': equipment, 'photos': photos}
     return render(request, 'detail_equipment.html', context)
+
+
+def cart_view(request):
+    session = request.session.session_key
+    message = ''
+    equipment = Equipment.objects.none()
+    reserved = users_cart(session)
+    if not reserved:
+        message = f'User {session} You have not reserved any equipments.'
+        context = {'message': message}
+        return render(request, 'cart.html', context)
+    for reserv in reserved:
+        equip = Equipment.objects.filter(id=reserv['id'])
+        equipment = equipment.union(equip)
+    for equip in equipment:
+        equip.photo = Photo.objects.filter(equipment=equip).first()
+
+    paginator = Paginator(equipment, 3)
+    page = request.GET.get('page')
+    try:
+        equipment = paginator.page(page)
+    except PageNotAnInteger:
+        equipment = paginator.page(1)
+    except EmptyPage:
+        equipment = paginator.page(paginator.num_pages)
+
+    if not equipment:
+        message = 'All equipments are reserved or booked, try again later.'
+    context = {'equipments': equipment, 'message': message, 'reserved': reserved}
+    return render(request, 'cart.html', context)
 
 
