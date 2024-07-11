@@ -64,11 +64,7 @@ def cart_view(request):
         equipment = paginator.page(1)
     except EmptyPage:
         equipment = paginator.page(paginator.num_pages)
-
     booked = Booked.objects.filter(sessionid=session)
-
-    if not equipment:
-        message = 'All equipments are reserved or booked, try again later.'
     context = {'equipments': equipment, 'message': message, 'reserved': reserved, 'booked': booked}
     return render(request, 'cart.html', context)
 
@@ -103,7 +99,7 @@ def booking(request):
                 booked.save()
                 equipment.status = 'booked'
                 equipment.save()
-                return redirect('cart')
+            return redirect('cart')
     else:
         form = BookingForm
     context = {'form': form}

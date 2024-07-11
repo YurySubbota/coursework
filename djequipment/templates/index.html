@@ -5,10 +5,8 @@
     {% for equipment in equipments %}
         <hr>
         <img width="150" src="/media/{{ equipment.photo.photo }}" alt="" class="">
-        <h1> {{ equipment.category }} </h1>
-        <p> {{ equipment.manufacturer }} </p>
-        <p> {{ equipment.model }} </p>
-        <p> {{ equipment.year }} </p>
+        <p>category {{ equipment.category }} | manufacturer {{ equipment.manufacturer }}  
+            | model {{ equipment.model }}  | </p>
         <br>
         <a href="{% url 'detail_equipment' equipment_id=equipment.id %}">Detail</a>
         <hr>
