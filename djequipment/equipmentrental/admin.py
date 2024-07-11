@@ -9,7 +9,7 @@ class PhotoInline(admin.StackedInline):
 
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category', 'manufacturer', 'model')
+    list_display = ('id', 'category', 'manufacturer', 'model', 'status')
     search_fields = ('id', 'category', 'manufacturer', 'model')
     list_filter = ('category', 'manufacturer', 'model')
     inlines = (PhotoInline,)
