@@ -38,7 +38,8 @@ class Photo(models.Model):
 
 class Booked(models.Model):
     equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
-    datetime = models.DateTimeField()
+    datetime = models.DateTimeField(auto_now_add=True)
     phone_number = models.CharField(max_length=100)
     sessionid = models.CharField(max_length=100)
     status = models.CharField(max_length=100, blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)

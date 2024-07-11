@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from equipmentrental.models import Equipment, Photo
+from equipmentrental.models import Equipment, Photo, Booked
 from equipmentrental.cart import is_reserved, users_cart, cart_get, cart_add, cart_remove
+from equipmentrental.forms import BookingForm
 
 
 def index(request):
@@ -50,7 +51,7 @@ def cart_view(request):
         context = {'message': message}
         return render(request, 'cart.html', context)
     for reserv in reserved:
-        equip = Equipment.objects.filter(id=reserv['id'])
+        equip = Equipment.objects.filter(id=reserv['id']).filter(status='ready')
         equipment = equipment.union(equip)
     for equip in equipment:
         equip.photo = Photo.objects.filter(equipment=equip).first()
@@ -64,9 +65,11 @@ def cart_view(request):
     except EmptyPage:
         equipment = paginator.page(paginator.num_pages)
 
+    booked = Booked.objects.filter(sessionid=session)
+
     if not equipment:
         message = 'All equipments are reserved or booked, try again later.'
-    context = {'equipments': equipment, 'message': message, 'reserved': reserved}
+    context = {'equipments': equipment, 'message': message, 'reserved': reserved, 'booked': booked}
     return render(request, 'cart.html', context)
 
 
@@ -79,3 +82,29 @@ def add_cart(request, equipment_id):
 def remove_cart(request, equipment_id):
     cart_remove(equipment_id)
     return redirect('cart')
+
+
+def booking(request):
+    session = request.session.session_key
+    message = ''
+    reserved = users_cart(session)
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            phone_number = form.cleaned_data["phone_number"]
+            comment = form.cleaned_data["comment"]
+            if not reserved:
+                message = f'User {session} You have not reserved any equipments.'
+                context = {'message': message}
+                return render(request, 'cart.html', context)
+            for reserv in reserved:
+                equipment = Equipment.objects.get(id=reserv['id'])
+                booked = Booked(equipment=equipment, phone_number=phone_number, comment=comment, sessionid=session)
+                booked.save()
+                equipment.status = 'booked'
+                equipment.save()
+                return redirect('cart')
+    else:
+        form = BookingForm
+    context = {'form': form}
+    return render(request, 'booking.html', context)

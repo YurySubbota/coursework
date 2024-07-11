@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Cart Page</h1>
+    <a href="{% url 'booking' %}">place an order</a>
     {% for equipment in equipments %}
         <hr>
         <img width="150" src="/media/{{ equipment.photo.photo }}" alt="" class="">
@@ -20,4 +21,14 @@
     {% endfor %}
     <p> {{ message }} </p>
     {% include 'pagination.html' with page=equipments %}
+    <hr>
+    <h1>You have already ordered</h1>
+    <br>
+    {% for booked_equip in booked %}
+        <p>equipment = {{ booked_equip.equipment.category }} {{ booked_equip.equipment.manufacturer }} 
+            {{ booked_equip.equipment.model }} price={{ booked_equip.equipment.price }}</p>
+        <p>the order is placed on a phone number {{ booked_equip.phone_number }}</p>
+        <a href="">Remove from order</a>
+        <br><br>
+    {% endfor %}
 {% endblock %}
