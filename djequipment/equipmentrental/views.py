@@ -8,7 +8,7 @@ from equipmentrental.forms import BookingForm
 def index(request):
     session = request.session.session_key
     message = ''
-    equipment = Equipment.objects.filter(status='ready').order_by('-id')
+    equipment = Equipment.objects.filter(status='ready').order_by('id')
     reserved = Equipment.objects.none()
     for equip in equipment:
         if is_reserved(equip.id):
