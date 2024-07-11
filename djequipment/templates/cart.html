@@ -2,7 +2,9 @@
 
 {% block content %}
     <h1>Cart Page</h1>
-    <a href="{% url 'booking' %}">place an order</a>
+    {% if equipments %}
+        <a href="{% url 'booking' %}">place an order</a>
+    {% endif %}
     {% for equipment in equipments %}
         <hr>
         <img width="150" src="/media/{{ equipment.photo.photo }}" alt="" class="">
@@ -22,7 +24,9 @@
     <p> {{ message }} </p>
     {% include 'pagination.html' with page=equipments %}
     <hr>
-    <h1>You have already ordered</h1>
+    {% if booked %}
+        <h1>You have already ordered</h1>
+    {% endif %}
     <br>
     {% for booked_equip in booked %}
         <p>equipment = {{ booked_equip.equipment.category }} {{ booked_equip.equipment.manufacturer }} 
