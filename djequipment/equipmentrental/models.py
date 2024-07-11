@@ -17,12 +17,12 @@ class Equipment(models.Model):
         ('speaker', 'speaker'),
         ('other', 'other'),
     )
-    category = models.CharField(choices=CATEGORY_CHOICES,default='other',max_length=100)
+    category = models.CharField(choices=CATEGORY_CHOICES, default='other', max_length=100)
     manufacturer = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.IntegerField(blank=True, null=True)
     description = models.TextField()
-    status = models.CharField(choices=STATUS_CHOICES, default='ready',max_length=100)
+    status = models.CharField(choices=STATUS_CHOICES, default='ready', max_length=100)
     warehouse_place = models.IntegerField(unique=True, null=True, blank=True)
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
@@ -32,5 +32,13 @@ class Equipment(models.Model):
 
 
 class Photo(models.Model):
-    equipment = models.ForeignKey(Equipment,on_delete=models.CASCADE)
+    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='photos/')
+
+
+class Booked(models.Model):
+    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    datetime = models.DateTimeField()
+    phone_number = models.CharField(max_length=100)
+    sessionid = models.CharField(max_length=100)
+    status = models.CharField(max_length=100, blank=True, null=True)
